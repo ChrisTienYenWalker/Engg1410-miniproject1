@@ -1,1 +1,1 @@
-Hello<tab><CR> hello
+Hello
