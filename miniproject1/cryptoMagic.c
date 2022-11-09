@@ -5,7 +5,7 @@
 #define _OPEN_SYS_ITOA_EXT
 
 int main(char *, char *[]);
-char* read(char*);
+char* read(char*, char* );
 int write(char* , char* , char [] , int);
 char* toHexString(int);
 
@@ -16,6 +16,8 @@ int main(char *crypt, char *inputs[])
     // decryption
     if (!strcmp(inputs[1], "-D") || !strcmp(inputs[1], "-d"))
     {
+        char* text;
+        text = read(stringFile, "hi");
         printf("hi");
     }
     // encryption
@@ -23,7 +25,7 @@ int main(char *crypt, char *inputs[])
     {
         char* text;
         //read from file
-        text = read(stringFile);
+        text = read(stringFile, "hi");
         char newtext[256];
         // printf("%s", text);
         int length = strlen(text);
@@ -102,7 +104,7 @@ char* toHexString(int decimal){
     
 }
 
-char* read(char* fileName){
+char* read(char* fileName, char* filetype){
     FILE *txtfile;
     char *text;
     long bytes;
