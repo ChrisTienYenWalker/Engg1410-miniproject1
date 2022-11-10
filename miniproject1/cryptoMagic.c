@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include<math.h>
+#include <math.h>
 #define _OPEN_SYS_ITOA_EXT
 
 int main(char *, char *[]);
 char *read(char *);
 int write(char *, char *, char[], int);
-char toHexAscii(char, char);
+int toHexAscii(char, char);
 
 int main(char *crypt, char *inputs[])
 {
@@ -18,17 +18,24 @@ int main(char *crypt, char *inputs[])
     if (!strcmp(inputs[1], "-D") || !strcmp(inputs[1], "-d"))
     {
         char *text;
-        char asciiArray[126];
+        int asciiArray[126];
         text = read(stringFile);
-        printf("%d", toHexAscii('B', '0'));
         for (int i = 0; i < strlen(text) / 2; i++)
         {
-            if (text[i * 2] = ' ')
+
+            //avoiding unwanted characters
+            if (text[i * 2] == ' ')
             {
                 i++;
             }
+            if(text[i * 2] == 'T' && text[i * 2 + 1] == 'T' ){
+                i+=2;
+            }
+            if(text[i * 2] == '<' && text[i * 2 + 1] == 'C' && text[i * 2 + 2] == 'R' && text[i * 2 + 3] == '>'){
+                i+=4;
+            }
             asciiArray[i] = toHexAscii(text[i * 2], text[i * 2 + 1]);
-            printf("%c", asciiArray[i]);
+            printf("%d", asciiArray[i]);
         }
     }
     // encryption
@@ -116,19 +123,11 @@ int main(char *crypt, char *inputs[])
     // printf("%s", inputs[1]);
 }
 
-char toHexAscii(char hex1, char hex2)
+int toHexAscii(char hex1, char hex2)
 {
-    char ascii = '0';
+    int ascii = 0;
     int y = 0;
-    int x;
-    if (hex1 >= '0' && hex1 <= '9')
-    {
-        x = hex1 - '0';
-    }
-    else
-    {
-        x = hex1 - 'A' + 10;
-    }
+    int x, i;
     if (hex2 >= '0' && hex2 <= '9')
     {
         x = hex2 - '0';
@@ -137,9 +136,18 @@ char toHexAscii(char hex1, char hex2)
     {
         x = hex2 - 'A' + 10;
     }
+    ascii = ascii + x * pow(16, y++); // converting hexadecimal to integer value ++y;
+    if (hex1 >= '0' && hex1 <= '9')
+    {
+        x = hex1 - '0';
+    }
+    else
+    {
+        x = hex1 - 'A' + 10;
+    }
     ascii = ascii + x * pow(16, y); // converting hexadecimal to integer value ++y;
 
-    return ascii;
+return ascii;
 }
 
 char *read(char *fileName)
