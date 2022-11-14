@@ -48,9 +48,9 @@ int main(char *crypt, char *inputs[])
         // printf("%s", text);
         int length = strlen(text);
         int newtextposition = 0;
-        // printf("%d", length);
         for (int i = 0; i < length; i++)
         {
+            printf("hi");
             // printf("%c", text[i]);
             if (text[i] == '<')
             {
@@ -91,18 +91,18 @@ int main(char *crypt, char *inputs[])
             }
             else
             {
-                // printf("%d", i);
-                // int outchar = text[i];
-                // printf("%c", outchar);
-                // outchar = outchar - 16;
-                // if(outchar< 32){
-                //     outchar = outchar-32 +144;
-                // }
-                newtext[newtextposition] = text[i];
-                newtextposition += 1;
+                printf("%d", i);
+                int outchar = text[i];
+                printf("%c", outchar);
+                outchar = outchar - 16;
+                if(outchar< 32){
+                    outchar = outchar-32 +144;
+                }
+                newtext[newtextposition] = outchar;
+                printf("%x", outchar);
+                newtextposition += 1; 
             }
         }
-
         // idea have an array in decimal and feed it into the write
         //  printf("%s", newtext);
         //  strcat( newtext, "hello");
@@ -163,7 +163,7 @@ char *read(char *fileName)
         printf("File Empty");
     }
 
-    fseek(txtfile, 0L, SEEK_END);
+     (txtfile, 0L, SEEK_END);
     bytes = ftell(txtfile);
     fseek(txtfile, 0L, SEEK_SET);
 
@@ -175,7 +175,7 @@ char *read(char *fileName)
     }
 
     fread(text, sizeof(char), bytes, txtfile);
-
+    printf("%s", text);
     // printf(text);
     fclose(txtfile);
     return text;
