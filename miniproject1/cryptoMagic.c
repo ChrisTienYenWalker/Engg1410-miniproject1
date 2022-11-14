@@ -7,16 +7,50 @@
 
 int main(char *, char *[]);
 char *read(char *);
-int write(char *, char *, char[], int);
+int write(char *, char *, int [], int);
 int toHexAscii(char, char);
 
 int main(char *crypt, char *inputs[])
 {
-    char *stringFile = inputs[2];
-    char text;
+    char *stringFile;
+    if(inputs[2] == NULL){
+        stringFile = inputs[1];
+    }else{
+        stringFile = inputs[2];
+    }
+    char *text;
     text = read(stringFile);
-    printf("%s", text);
+    printf("%s", stringFile);
 
+    int asciiArray[256];
+    int asciiArrayCounter = 0;
+    for(int i = 0; i < strlen(text)/2; i++){
+        if(text[i] == 'T' && text[i+1] == 'T'){
+            asciiArray[asciiArrayCounter] = 9;
+            asciiArrayCounter++;
+            i++;
+        }
+        if(text[i*2] == '<' && text[i*2+1] == 'C' && text[i*2+2] == 'R' && text[i*2+3] == '>'){
+            asciiArray[asciiArrayCounter] = 60;
+            asciiArray[asciiArrayCounter+1] = 67;
+            asciiArray[asciiArrayCounter+2] = 82;
+            asciiArray[asciiArrayCounter+3] = 62;
+            asciiArrayCounter+=4;
+            i+=2;
+        }
+        else{
+            char outchar = toHexAscii(text[i*2], text[i*2+1]);
+            printf("\n%c, %c, ", text[i*2], text[i*2+1]);
+            printf("%d", outchar);
+            outchar += 16;
+            if(outchar > 127){
+                outchar = outchar-144+32;
+            }
+            asciiArray[asciiArrayCounter] = outchar;
+            asciiArrayCounter++;
+        }
+    }
+    write(stringFile, "txt", asciiArray, asciiArrayCounter);
 }
 
 int toHexAscii(char hex1, char hex2)
@@ -49,7 +83,8 @@ return ascii;
 char *read(char *fileName)
 {
     FILE *txtfile;
-    char *text;
+    char *text = "";
+    char newtext[256];
     long bytes;
     // open and read file
     txtfile = fopen(fileName, "r");
@@ -65,16 +100,19 @@ char *read(char *fileName)
     {
         printf("File Empty");
     }
-
-    fread(text, sizeof(char), bytes, txtfile);
+    while(fgets(newtext,sizeof newtext,txtfile)!= NULL) /* read a line from a file */ {
+        strcat(text, newtext);
+    }
+    // fread(text, sizeof(char), bytes, txtfile);
 
     fclose(txtfile);
     return text;
 }
 
-int write(char *fileName, char *filetype, char exportText[], int arraylength)
+int write(char *fileName, char *filetype, int exportText[], int arraylength)
 {
     FILE *fptr;
+    fileName[strlen(fileName)-3] = '\0';
     strcat(fileName, filetype);
 
     fptr = fopen(fileName,"w");
@@ -105,7 +143,9 @@ int write(char *fileName, char *filetype, char exportText[], int arraylength)
         }
     }
     else{
-        fprintf(fptr,"%s",exportText);
+        for(int i = 0; i < arraylength; i++){
+            fprintf(fptr,"%c",exportText[i]);
+        }
     }
     fclose(fptr);
 
