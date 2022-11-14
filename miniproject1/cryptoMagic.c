@@ -20,7 +20,7 @@ int main(char *crypt, char *inputs[])
     }
     char *text;
     text = read(stringFile);
-    printf("%s", stringFile);
+    // printf("%s", stringFile);
 
     int asciiArray[256];
     int asciiArrayCounter = 0;
@@ -40,8 +40,6 @@ int main(char *crypt, char *inputs[])
         }
         else{
             char outchar = toHexAscii(text[i*2], text[i*2+1]);
-            printf("\n%c, %c, ", text[i*2], text[i*2+1]);
-            printf("%d", outchar);
             outchar += 16;
             if(outchar > 127){
                 outchar = outchar-144+32;
@@ -50,6 +48,7 @@ int main(char *crypt, char *inputs[])
             asciiArrayCounter++;
         }
     }
+
     write(stringFile, "txt", asciiArray, asciiArrayCounter);
 }
 
@@ -114,7 +113,6 @@ int write(char *fileName, char *filetype, int exportText[], int arraylength)
     FILE *fptr;
     fileName[strlen(fileName)-3] = '\0';
     strcat(fileName, filetype);
-
     fptr = fopen(fileName,"w");
     if(!strcmp(filetype, "crp")){
         for (int i = 0; i < arraylength; i++)
@@ -143,7 +141,9 @@ int write(char *fileName, char *filetype, int exportText[], int arraylength)
         }
     }
     else{
+        // printf("hi");
         for(int i = 0; i < arraylength; i++){
+            // printf("%d", exportText[i]);
             fprintf(fptr,"%c",exportText[i]);
         }
     }
