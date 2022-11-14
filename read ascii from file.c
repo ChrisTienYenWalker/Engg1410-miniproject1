@@ -6,7 +6,7 @@ int main()
    int num;
    FILE *fptr;
 
-   if ((fptr = fopen("C:\\asciiwritefile.txt","r")) == NULL){
+   if ((fptr = fopen("something.txt","r")) == NULL){
        printf("Error! opening file");
 
        // Program exits if the file pointer returns NULL.
